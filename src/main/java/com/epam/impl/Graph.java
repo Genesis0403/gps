@@ -1,7 +1,6 @@
-package com.epam.graph;
+package com.epam.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Graph {
@@ -13,7 +12,9 @@ public class Graph {
         this.verticesAmount = verticesAmount;
         slatsAmount = 0;
         adj = new ArrayList<>(verticesAmount);
-        Collections.fill(adj, new ArrayList<>());
+        for (int i = 0; i < verticesAmount; i++) {
+            adj.add(new ArrayList<>());
+        }
     }
 
     public void addEdge(Edge e) {
@@ -28,6 +29,10 @@ public class Graph {
 
     public int getSlatsAmount() {
         return slatsAmount;
+    }
+
+    public Iterable<Edge> adj(int v) {
+        return adj.get(v);
     }
 
     public List<Edge> edges() {

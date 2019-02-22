@@ -1,4 +1,4 @@
-package com.epam.graph;
+package com.epam.impl;
 
 import java.util.Objects;
 

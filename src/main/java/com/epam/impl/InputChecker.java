@@ -1,4 +1,4 @@
-package com.epam.util;
+package com.epam.impl;
 
 import java.io.FileNotFoundException;
 import java.nio.file.Files;
@@ -18,7 +18,7 @@ public class InputChecker {
 
     public static Path checkFileExistence(String name) {
         Path path = Paths.get(name);
-        if (Files.exists(path)) throw new IllegalArgumentException("File: " + name + " doesn't exist");
+        if (!Files.exists(path)) throw new IllegalArgumentException("File \"" + name + "\" doesn't exist");
         return path;
     }
 }
