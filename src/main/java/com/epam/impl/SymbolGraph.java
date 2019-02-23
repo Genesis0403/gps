@@ -11,7 +11,7 @@ public class SymbolGraph {
     private Graph graph;
 
     public SymbolGraph(String fileName) {
-        Path path = InputChecker.checkFileExistence(fileName);
+        Path path = InputChecker.checkFile(fileName);
         fillVerticesIndexes(path);
         fillVerticesList();
         buildGraph(path);
@@ -23,7 +23,7 @@ public class SymbolGraph {
             int count = 0;
             while (sc.hasNextLine()) {
                 String[] line = sc.nextLine().split("\\s");
-                InputChecker.checkString(line[0], line[1]);
+                //InputChecker.checkString(line[0], line[1]);
                 if (!verticesIndexes.containsKey(line[0])) verticesIndexes.put(line[0], count++);
                 if (!verticesIndexes.containsKey(line[1])) verticesIndexes.put(line[1], count++);
             }
@@ -64,11 +64,14 @@ public class SymbolGraph {
 
     public int index(String vertex) {
         if (vertex == null) throw new IllegalStateException("Vertex can't be null.");
+        if (!contains(vertex)) throw new IllegalArgumentException("\"" + vertex + "\" not found.");
         return verticesIndexes.get(vertex);
     }
 
     public String vertex(int index) {
-        if (index < 0 || index >= vertices.size()) throw new IllegalArgumentException();
+        if (index < 0 || index >= vertices.size()) {
+            throw new IllegalArgumentException("Index " + index + " out of range");
+        }
         return vertices.get(index);
     }
 

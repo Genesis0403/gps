@@ -1,6 +1,5 @@
 package com.epam.impl;
 
-import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,9 +15,14 @@ public class InputChecker {
         }
     }
 
-    public static Path checkFileExistence(String name) {
+    public static Path checkFile(String name) {
         Path path = Paths.get(name);
-        if (!Files.exists(path)) throw new IllegalArgumentException("File \"" + name + "\" doesn't exist");
+        if (!Files.exists(path)) {
+            throw new IllegalArgumentException("File \"" + name + "\" doesn't exist.");
+        }
+        if (!Files.isReadable(path)) {
+            throw new IllegalArgumentException("File \"" + name + "\" is not readable.");
+        }
         return path;
     }
 }
