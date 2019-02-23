@@ -23,17 +23,17 @@ public class DijkstraSearch {
     private class Node implements Comparable<Node> {
 
         private double weight;
-        private int coast;
+        private int cost;
 
-        public Node(double weight, int coast) {
+        public Node(double weight, int cost) {
             this.weight = weight;
-            this.coast = coast;
+            this.cost = cost;
         }
 
         @Override
         public int compareTo(Node that) {
             int result = Double.compare(weight, that.weight);
-            return result == 0 ? Integer.compare(coast, that.coast): result;
+            return result == 0 ? Integer.compare(cost, that.cost): result;
         }
     }
 
@@ -49,14 +49,14 @@ public class DijkstraSearch {
         for (Edge e : g.adj(v)) {
             int w = e.to();
             if (distTo(w) > distTo(v) + e.getWeight()) {
-                distTo.set(w, new Node(distTo(v) + e.getWeight(), distTo.get(v).coast + e.getCost()));
+                distTo.set(w, new Node(distTo(v) + e.getWeight(), distTo.get(v).cost + e.getCost()));
                 edgeTo.set(w, e);
                 if (pq.contains(w)) pq.change(w, distTo.get(w));
                 else pq.insert(w, distTo.get(w));
             } else if (distTo(w) == distTo(v) + e.getWeight()) {
-                boolean cmp = distTo.get(w).coast > distTo.get(v).coast + e.getCost();
+                boolean cmp = distTo.get(w).cost > distTo.get(v).cost + e.getCost();
                 if (cmp) {
-                    distTo.set(w, new Node(distTo(w), distTo.get(v).coast + e.getCost()));
+                    distTo.set(w, new Node(distTo(w), distTo.get(v).cost + e.getCost()));
                     edgeTo.set(w, e);
                     pq.change(w, distTo.get(w));
                 }
