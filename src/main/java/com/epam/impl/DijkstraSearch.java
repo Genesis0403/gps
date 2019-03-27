@@ -3,79 +3,67 @@ package com.epam.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 public class DijkstraSearch {
-    private List<Edge> edgeTo;
-    private List<Node> distTo;
-    private PriorityQueue<Node> pq;
 
-    public DijkstraSearch(Graph g, int s) {
-        edgeTo = new ArrayList<>(g.getVerticesAmount());
-        distTo = new ArrayList<>(g.getVerticesAmount());
-        pq = new PriorityQueue<>(g.getVerticesAmount());
-        fillLists(g.getVerticesAmount(), s);
-        pq.insert(s, distTo.get(s));
+    public static <T extends Nodable> List<T> findPath(List<T> edges,
+                                                       String from,
+                                                       String to,
+                                                       Function<? super T, Double> costCounter) {
+        Graph<T> graph = new Graph<>(edges);
+        int verticesAmount = graph.getVerticesAmount();
+        List<T> edgeTo = new ArrayList<>(verticesAmount);
+        List<Double> distTo = new ArrayList<>(verticesAmount);
+
+        int fromIndex = graph.index(from);
+        fillList(edgeTo, null, verticesAmount);
+        fillList(distTo, Double.POSITIVE_INFINITY, verticesAmount);
+        distTo.set(fromIndex, 0.0);
+
+        PriorityQueue<Double> pq = new PriorityQueue<>(graph.getVerticesAmount());
+        pq.insert(fromIndex, distTo.get(fromIndex));
         while (!pq.isEmpty()) {
-            relax(g, pq.delMin());
+            relax(graph, pq.delMin(), costCounter, distTo, edgeTo, pq);
         }
+        return pathTo(graph, distTo, edgeTo, graph.index(to));
     }
 
-    private class Node implements Comparable<Node> {
-
-        private double weight;
-        private int cost;
-
-        public Node(double weight, int cost) {
-            this.weight = weight;
-            this.cost = cost;
-        }
-
-        @Override
-        public int compareTo(Node that) {
-            int result = Double.compare(weight, that.weight);
-            return result == 0 ? Integer.compare(cost, that.cost): result;
-        }
-    }
-
-    private void fillLists(int size, int s) {
+    private static <T> void fillList(List<T> list, T el, int size) {
         for (int i = 0; i < size; i++) {
-            edgeTo.add(null);
-            distTo.add(new Node(Double.POSITIVE_INFINITY, 0));
+            list.add(el);
         }
-        distTo.set(s, new Node(0.0, 0));
     }
 
-    public void relax(Graph g, int v) {
-        for (Edge e : g.adj(v)) {
-            int w = e.to();
-            if (distTo(w) > distTo(v) + e.getWeight()) {
-                distTo.set(w, new Node(distTo(v) + e.getWeight(), distTo.get(v).cost + e.getCost()));
+    private static <T extends Nodable> void relax(Graph<T> graph,
+                                                  int v,
+                                                  Function<? super T, Double> costCounter,
+                                                  List<Double> distTo,
+                                                  List<T> edgeTo,
+                                                  PriorityQueue<Double> pq) {
+        for (T e : graph.adj(v)) {
+            int w = graph.index(e.edgeTo());
+            double cost = costCounter.apply(e);
+            if (distTo.get(w) > cost + distTo.get(v)) {
+                distTo.set(w, cost + distTo.get(v));
                 edgeTo.set(w, e);
                 if (pq.contains(w)) pq.change(w, distTo.get(w));
                 else pq.insert(w, distTo.get(w));
-            } else if (distTo(w) == distTo(v) + e.getWeight()) {
-                boolean cmp = distTo.get(w).cost > distTo.get(v).cost + e.getCost();
-                if (cmp) {
-                    distTo.set(w, new Node(distTo(w), distTo.get(v).cost + e.getCost()));
-                    edgeTo.set(w, e);
-                    pq.change(w, distTo.get(w));
-                }
             }
         }
     }
 
-    public double distTo(int v) {
-        return distTo.get(v).weight;
+    private static boolean hasPathTo(List<Double> distTo, int v) {
+        return distTo.get(v) < Double.POSITIVE_INFINITY;
     }
 
-    public boolean hastPathTo(int v) {
-        return distTo.get(v).weight < Double.POSITIVE_INFINITY;
-    }
-
-    public List<Edge> pathTo(int v) {
-        if (!hastPathTo(v)) throw new IllegalStateException();
-        List<Edge> path = new ArrayList<>();
-        for (Edge e = edgeTo.get(v); e != null; e = edgeTo.get(e.from())) {
+    private static <T extends Nodable> List<T> pathTo(Graph<T> graph,
+                                                      List<Double> distTo,
+                                                      List<T> edgeTo,
+                                                      int v) {
+        if (!hasPathTo(distTo, v)) return Collections.EMPTY_LIST;
+        List<T> path = new ArrayList<>();
+        for (T e = edgeTo.get(v); e != null; e = edgeTo.get(graph.index(e.edgeFrom()))) {
             path.add(e);
         }
         Collections.reverse(path);

@@ -14,7 +14,7 @@ public class SymbolGraph {
         Path path = InputChecker.checkFile(fileName);
         fillVerticesIndexes(path);
         fillVerticesList();
-        buildGraph(path);
+        //buildGraph(path);
     }
 
     private void fillVerticesIndexes(Path fileName) {
@@ -40,7 +40,7 @@ public class SymbolGraph {
         }
     }
 
-    private void buildGraph(Path fileName) {
+   /* private void buildGraph(Path fileName) {
         try {
             graph = new Graph(verticesIndexes.size());
             Scanner sc = new Scanner(new FileInputStream(fileName.toFile()));
@@ -55,7 +55,7 @@ public class SymbolGraph {
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException("File:" + fileName + " doesn't exist");
         }
-    }
+    }*/
 
     public boolean contains(String vertex) {
         if (vertex == null) throw new IllegalStateException("Vertex can't be null.");

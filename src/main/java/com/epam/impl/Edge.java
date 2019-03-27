@@ -1,30 +1,30 @@
 package com.epam.impl;
 
-import java.util.Objects;
-
-public class Edge {
-    private int fromEdge;
-    private int toEdge;
-    private double weight;
+public class Edge implements Nodable {
+    private String fromEdge;
+    private String toEdge;
+    private double length;
     private int cost;
 
-    public Edge(int fromEdge, int toEdge, double weight, int cost) {
+    public Edge(String fromEdge, String toEdge, double length, int cost) {
         this.fromEdge = fromEdge;
         this.toEdge = toEdge;
-        this.weight = weight;
+        this.length = length;
         this.cost = cost;
     }
 
-    public int from() {
+    @Override
+    public String edgeFrom() {
         return fromEdge;
     }
 
-    public int to() {
+    @Override
+    public String edgeTo() {
         return toEdge;
     }
 
-    public double getWeight() {
-        return weight;
+    public double getLength() {
+        return length;
     }
 
     public int getCost() {
@@ -32,23 +32,7 @@ public class Edge {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Edge edge = (Edge) o;
-        return fromEdge == edge.fromEdge &&
-                toEdge == edge.toEdge &&
-                Double.compare(edge.weight, weight) == 0 &&
-                cost == edge.cost;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(fromEdge, toEdge, weight, cost);
-    }
-
-    @Override
     public String toString() {
-        return String.format("%d->%d %.2f", fromEdge, toEdge, weight);
+        return String.format("%d->%d %.2f", fromEdge, toEdge, length);
     }
 }

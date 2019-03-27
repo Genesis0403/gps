@@ -1,27 +1,52 @@
 package com.epam.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-public class Graph {
+public class Graph<T extends Nodable> {
     private int verticesAmount;
     private int slatsAmount;
-    private List<Edge>[] adj;
+    private Map<String, Integer> indexes = new HashMap<>();
+    private List<T>[] adj;
 
     @SuppressWarnings("unchecked")
-    public Graph(int verticesAmount) {
-        this.verticesAmount = verticesAmount;
-        slatsAmount = 0;
-        adj = (List<Edge>[])new List[verticesAmount];
+    public Graph(List<T> edges) {
+        if (edges == null) throw new IllegalStateException();
+        this.verticesAmount = countVerticesAmount(edges);
+        adj = (List<T>[]) new List[verticesAmount];
         for (int i = 0; i < verticesAmount; i++) {
             adj[i] = new ArrayList<>();
         }
+        countVerticesIndexes(edges);
     }
 
-    public void addEdge(Edge e) {
+    private void countVerticesIndexes(List<T> edges) {
+        int count = 0;
+        for (T edge : edges) {
+            if (edge == null) throw new IllegalStateException();
+            if (!indexes.containsKey(edge.edgeFrom())) indexes.put(edge.edgeFrom(), count++);
+            if (!indexes.containsKey(edge.edgeTo())) indexes.put(edge.edgeTo(), count++);
+            addEdge(edge);
+        }
+    }
+
+    private int countVerticesAmount(List<T> edges) {
+        Set<String> eachVertex = new HashSet<>();
+        for (T edge : edges) {
+            eachVertex.add(edge.edgeFrom());
+            eachVertex.add(edge.edgeTo());
+        }
+        return eachVertex.size();
+    }
+
+    public void addEdge(T e) {
         if (e == null) throw new IllegalStateException("Edge must'n be null.");
-        adj[e.from()].add(e);
+        adj[indexes.get(e.edgeFrom())].add(e);
         slatsAmount++;
+    }
+
+    public int index(String vertex) {
+        if (vertex == null || !indexes.keySet().contains(vertex)) throw new IllegalStateException();
+        return indexes.get(vertex);
     }
 
     public int getVerticesAmount() {
@@ -32,13 +57,13 @@ public class Graph {
         return slatsAmount;
     }
 
-    public List<Edge> adj(int v) {
+    public List<T> adj(int v) {
         return adj[v];
     }
 
-    public List<Edge> edges() {
-        List<Edge> edges = new ArrayList<>();
-        for (List<Edge> anAdj : adj) {
+    public List<T> edges() {
+        List<T> edges = new ArrayList<>();
+        for (List<T> anAdj : adj) {
             edges.addAll(anAdj);
         }
         return edges;
