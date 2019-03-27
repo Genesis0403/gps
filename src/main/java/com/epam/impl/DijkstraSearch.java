@@ -24,7 +24,7 @@ public class DijkstraSearch {
         PriorityQueue<Double> pq = new PriorityQueue<>(graph.getVerticesAmount());
         pq.insert(fromIndex, distTo.get(fromIndex));
         while (!pq.isEmpty()) {
-            relax(graph, pq.delMin(), costCounter, distTo, edgeTo, pq);
+            relax(graph, pq.delMin(), distTo, edgeTo, pq, costCounter);
         }
         return pathTo(graph, distTo, edgeTo, graph.index(to));
     }
@@ -37,10 +37,10 @@ public class DijkstraSearch {
 
     private static <T extends Nodable> void relax(Graph<T> graph,
                                                   int v,
-                                                  Function<? super T, Double> costCounter,
                                                   List<Double> distTo,
                                                   List<T> edgeTo,
-                                                  PriorityQueue<Double> pq) {
+                                                  PriorityQueue<Double> pq,
+                                                  Function<? super T, Double> costCounter) {
         for (T e : graph.adj(v)) {
             int w = graph.index(e.edgeTo());
             double cost = costCounter.apply(e);

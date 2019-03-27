@@ -4,6 +4,7 @@ import com.epam.api.GpsNavigator;
 import com.epam.api.Path;
 import com.epam.impl.DijkstraSearch;
 import com.epam.impl.Edge;
+import com.epam.impl.InputChecker;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,6 +31,7 @@ public class App {
 
         @Override
         public void readData(String filePath) {
+            InputChecker.checkFile(filePath);
             try {
                 Scanner sc = new Scanner(new FileInputStream(filePath));
                 while (sc.hasNextLine()) {
