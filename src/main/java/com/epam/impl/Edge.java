@@ -1,12 +1,12 @@
 package com.epam.impl;
 
 public class Edge implements Nodable {
-    private String fromEdge;
-    private String toEdge;
-    private double length;
-    private int cost;
+    private final String fromEdge;
+    private final String toEdge;
+    private final double length;
+    private final double cost;
 
-    public Edge(String fromEdge, String toEdge, double length, int cost) {
+    public Edge(String fromEdge, String toEdge, double length, double cost) {
         this.fromEdge = fromEdge;
         this.toEdge = toEdge;
         this.length = length;
@@ -27,7 +27,7 @@ public class Edge implements Nodable {
         return length;
     }
 
-    public int getCost() {
+    public double getCost() {
         return cost;
     }
 

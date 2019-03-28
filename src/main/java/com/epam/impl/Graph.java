@@ -3,10 +3,10 @@ package com.epam.impl;
 import java.util.*;
 
 public class Graph<T extends Nodable> {
+    private final Map<String, Integer> indexes = new HashMap<>();
+    private final List<T>[] adj;
     private int verticesAmount;
     private int slatsAmount;
-    private Map<String, Integer> indexes = new HashMap<>();
-    private List<T>[] adj;
 
     @SuppressWarnings("unchecked")
     public Graph(List<T> edges) {
@@ -51,10 +51,6 @@ public class Graph<T extends Nodable> {
 
     public int getVerticesAmount() {
         return verticesAmount;
-    }
-
-    public int getSlatsAmount() {
-        return slatsAmount;
     }
 
     public List<T> adj(int v) {

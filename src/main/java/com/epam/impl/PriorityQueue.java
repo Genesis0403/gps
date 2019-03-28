@@ -3,9 +3,9 @@ package com.epam.impl;
 import java.util.*;
 
 public class PriorityQueue<K extends Comparable<K>> {
-    private List<Integer> pq;
-    private List<Integer> qp;
-    private List<K> keys;
+    private final List<Integer> pq;
+    private final List<Integer> qp;
+    private final List<K> keys;
     private int elementsAmount;
     private int n;
 

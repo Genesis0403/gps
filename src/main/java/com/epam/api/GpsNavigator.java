@@ -1,9 +1,13 @@
 package com.epam.api;
 
-public interface GpsNavigator {
+import com.epam.impl.Nodable;
+
+import java.util.function.Function;
+
+public interface GpsNavigator<T extends Nodable> {
 
     /**
-     * This method needs to be called before using the {@link #findPath(String, String)}.
+     * This method needs to be called before using the {@link #findPath(String, String, Function)}.
      *
      * @param filePath path to file, which contains data in the following format:
      *                 A B 3 2
@@ -26,5 +30,5 @@ public interface GpsNavigator {
      * @param pointB end point.
      * @return object, which describes the found path.
      */
-    Path findPath(String pointA, String pointB);
+    Path findPath(String pointA, String pointB, Function<? super T, Double> costCounter);
 }
