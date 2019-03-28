@@ -2,17 +2,12 @@ package com.epam;
 
 import com.epam.api.GpsNavigator;
 import com.epam.api.Path;
-import com.epam.impl.DijkstraSearch;
+import com.epam.impl.graph.DijkstraSearch;
 import com.epam.impl.Edge;
-import com.epam.impl.FileLinesReader;
-import com.epam.impl.InputChecker;
+import com.epam.impl.util.FileLinesReader;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.function.Function;
 
 /**

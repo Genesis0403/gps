@@ -1,9 +1,13 @@
-package com.epam.impl;
+package com.epam.impl.graph;
+
+import com.epam.impl.PriorityQueue;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
+
+import static com.epam.impl.util.InputChecker.*;
 
 public class DijkstraSearch {
 
@@ -11,6 +15,11 @@ public class DijkstraSearch {
                                                        String from,
                                                        String to,
                                                        Function<? super T, Double> costCounter) {
+        checkForNull(edges);
+        checkForNull(from);
+        checkForNull(to);
+        checkForNull(costCounter);
+
         Graph<T> graph = new Graph<>(edges);
         int verticesAmount = graph.getVerticesAmount();
         List<T> edgeTo = new ArrayList<>(verticesAmount);

@@ -1,5 +1,7 @@
 package com.epam.impl;
 
+import com.epam.impl.graph.Nodable;
+
 public class Edge implements Nodable {
     private final String fromEdge;
     private final String toEdge;

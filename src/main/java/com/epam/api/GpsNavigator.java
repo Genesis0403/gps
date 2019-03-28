@@ -1,6 +1,6 @@
 package com.epam.api;
 
-import com.epam.impl.Nodable;
+import com.epam.impl.graph.Nodable;
 
 import java.util.function.Function;
 

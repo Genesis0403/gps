@@ -1,6 +1,8 @@
 package com.epam.impl;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class PriorityQueue<K extends Comparable<K>> {
     private final List<Integer> pq;
@@ -10,6 +12,7 @@ public class PriorityQueue<K extends Comparable<K>> {
     private int n;
 
     public PriorityQueue(int elementsAmount) {
+        if (elementsAmount < 0) throw new IllegalArgumentException("Negative size is not allowed.");
         this.elementsAmount = elementsAmount;
         keys = new ArrayList<>(elementsAmount + 1);
         pq = new ArrayList<>(elementsAmount + 1);
@@ -51,7 +54,8 @@ public class PriorityQueue<K extends Comparable<K>> {
     }
 
     public void insert(int i, K key) {
-        if (contains(i)) throw new IllegalArgumentException();
+        if (contains(i)) throw new IllegalArgumentException("i=" + i + " already exists.");
+        if (key == null) throw new IllegalArgumentException("Null is not allowed.");
         n++;
         qp.set(i, n);
         pq.set(n, i);
